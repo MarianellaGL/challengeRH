@@ -9,7 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -19,21 +20,23 @@ public class Empleado {
     @Id
     @Column(name = "empleado_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int empleadoId;
-    private String nombreEmpleado;
+    private Integer empleadoId;
+     @Column(name = "nombre_empleado")
+	public String nombreEmpleado;
+     @Column(name = "edad_empleado")
     private int edadEmpleado;
-    private String password;
     @Column(name = "estado_empleado")
     private String estadoEmpleado;
+     @Column(name = "fecha_alta")
     private Date fechaAlta;
+     @Column(name = "fecha_baja")
     private Date fechaBaja;
+     @Column(name = "sueldo_empleado")
     private BigDecimal sueldoEmpleado;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "categoria_id", referencedColumnName = "categoria_id")
-     Categoria categoria;
-
-
+    Categoria categoria;
 
     public Empleado(int empleadoId, String nombreEmpleado, int edadEmpleado, Categoria categoria, String estadoEmpleado,
             Date fechaAlta, Date fechaBaja) {
@@ -45,14 +48,11 @@ public class Empleado {
         this.fechaBaja = fechaBaja;
     }
 
-    public Empleado() {
-    }
-
-    public int getEmpleadoId() {
+    public Integer getEmpleadoId() {
         return empleadoId;
     }
 
-    public void setEmpleadoId(int empleadoId) {
+    public void setEmpleadoId(Integer empleadoId) {
         this.empleadoId = empleadoId;
     }
 
@@ -104,10 +104,14 @@ public class Empleado {
         this.sueldoEmpleado = sueldoEmpleado;
     }
 
-
+    public Categoria getCategoria() {
+        return categoria;
+    }
 
     public void setCategoria(Categoria categoria) {
-        this.categoria = categoria;
-        this.categoria.setEmpleado(this);
+		this.categoria = categoria;
+	}
+
+    public Empleado() {
     }
 }

@@ -7,16 +7,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import ar.com.ada.challengerh.challengerh.entities.Categoria;
 import ar.com.ada.challengerh.challengerh.entities.Empleado;
-import ar.com.ada.challengerh.challengerh.excepciones.EmpleadoInfoException;
 import ar.com.ada.challengerh.challengerh.repo.EmpleadoRepository;
 
 /**
- * UsuarioService
+ * EmpleadoService
  */
 @Service
 public class EmpleadoService {
@@ -27,43 +24,61 @@ public class EmpleadoService {
     @Autowired
     CategoriaService cs;
 
-    @PostMapping("/empleados")
-    public int alta(String nombreEmpleado, int edad, int categoriaId, BigDecimal sueldo, Date fechaAlta)
-            throws EmpleadoInfoException {
-
+    public int crearEmpleado(String nombreEmpleado, int edadEmpleado, Integer categoriaId, BigDecimal sueldoEmpleado){
         Empleado e = new Empleado();
         e.setNombreEmpleado(nombreEmpleado);
-        e.setEdadEmpleado(edad);
-        e.setSueldoEmpleado(sueldo);
-        e.setFechaAlta(fechaAlta);
-
-        e.getEmpleadoId();
-
+        e.setEdadEmpleado(edadEmpleado);
+        Categoria c = cs.buscarPorId(categoriaId);
+        e.setCategoria(c);
+        e.setSueldoEmpleado(c.getSueldoBase());
+        Date f = new Date();
+        e.setFechaAlta(f);
+        e.setEstadoEmpleado("Activo");
         repo.save(e);
-
         return e.getEmpleadoId();
-
     }
 
-    public void save(Empleado e) {
-        repo.save(e);
-    }
-
-    @GetMapping("/empleados")
-    public List<Empleado> getEmpleados() {
-
+    public List<Empleado> listarEmpleados() { // CON info categoria
         return repo.findAll();
+
     }
 
-    @GetMapping("/empleados/{id}")
+    public Empleado buscarPorId(Integer empleadoId) {
 
-    public Empleado buscarPorId(int empleadoId) {
+        Optional<Empleado> e = repo.findById(empleadoId);
 
-        Optional<Empleado> em = repo.findById(empleadoId);
-
-        if (em.isPresent()) {
-            return em.get();
+        if (e.isPresent()) {
+            return e.get();
         }
         return null;
     }
+
+    public Empleado updateEmpleado(Integer empleadoId, String nombreEmpleado, int edadEmpleado, Integer categoriaId) { // excepto sueldo y estado
+        Empleado e = this.buscarPorId(empleadoId);
+        e.setNombreEmpleado(nombreEmpleado);
+        e.setEdadEmpleado(edadEmpleado);
+        // e.getCategoria().getEmpleados().remove(e);
+        e.setCategoria(cs.buscarPorId(categoriaId));
+        // c.getEmpleados().add(e);
+        repo.save(e);
+        return e;
+    }
+
+    public Empleado updateSueldo(Integer empleadoId, BigDecimal sueldoEmpleado) {
+        Empleado e = this.buscarPorId(empleadoId);
+        e.setSueldoEmpleado(sueldoEmpleado);
+        repo.save(e);
+        return e;
+    }
+
+    public Empleado bajaEmpleado(Integer empleadoId) {
+        Empleado e = this.buscarPorId(empleadoId);
+        e.setEstadoEmpleado("Baja");
+        Date f = new Date();
+        e.setFechaBaja(f);
+        repo.save(e);
+        return e;
+
+    }
+
 }

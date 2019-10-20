@@ -1,37 +1,44 @@
 package ar.com.ada.challengerh.challengerh.services;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import ar.com.ada.challengerh.challengerh.entities.Categoria;
+import ar.com.ada.challengerh.challengerh.entities.Empleado;
 import ar.com.ada.challengerh.challengerh.excepciones.CategoriaInfoException;
 import ar.com.ada.challengerh.challengerh.repo.CategoriaRepository;
 
+/**
+ * CategoriaService
+ */
 @Service
 public class CategoriaService {
 
     @Autowired
     CategoriaRepository repo;
+
     @Autowired
     EmpleadoService es;
 
-    public void save(Categoria c) {
-
+    public int crearCategoria(String nombreCategoria, BigDecimal sueldoBase){
+        Categoria c = new Categoria();
+        c.setNombreCategoria(nombreCategoria);
+        c.setSueldoBase(sueldoBase);
         repo.save(c);
+
+        return c.getCategoriaId();
     }
 
-    public List<Categoria> getCategorias() {
-
+    public List<Categoria> listarCategorias(){ //SIN empleados????
         return repo.findAll();
+
     }
 
-    @GetMapping("/categorias")
-    public Categoria buscarPorId(int categoriaId) {
+    public Categoria buscarPorId(Integer categoriaId) {
 
         Optional<Categoria> c = repo.findById(categoriaId);
 
@@ -41,17 +48,27 @@ public class CategoriaService {
         return null;
     }
 
-    @PostMapping("/categorias")
-    public int altaCategoria(String nombreCategoria, BigDecimal sueldoBase) throws CategoriaInfoException {
-
-        Categoria c = new Categoria();
-        c.setNombre(nombreCategoria);
-        c.setSueldoBase(sueldoBase);
-
-        c.setCategoriaId();
-
-        return c.getCategoriaId();
-
+    public List<Empleado> getEmpleadosCategoriaNombre(String nombreCategoria) throws CategoriaInfoException {
+        int id;
+        for (Categoria c : repo.findAll()) {
+            if (c.nombreCategoria.equals(nombreCategoria)) {
+                id = c.getCategoriaId();
+                Categoria cat = buscarPorId(id);
+                return cat.getEmpleadosPorCategoria();
+            }
+        }
+        throw new CategoriaInfoException("No se encuentra una categoría con ese nombre.");
     }
+
+    public List<Empleado> getEmpleadosCategoriaId(Integer categoriaid) throws CategoriaInfoException {
+        for (Categoria c : repo.findAll()) {
+            if (c.getCategoriaId() == categoriaid) {
+                Categoria cat = buscarPorId(categoriaid);
+                return cat.getEmpleadosPorCategoria();
+            }
+        }
+        throw new CategoriaInfoException("No se encuentra una categoría con ese id.");
+    }
+
 
 }

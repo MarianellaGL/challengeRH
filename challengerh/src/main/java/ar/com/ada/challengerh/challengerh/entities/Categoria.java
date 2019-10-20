@@ -1,9 +1,20 @@
 package ar.com.ada.challengerh.challengerh.entities;
 
-import java.math.*;
-import java.util.*;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "categoria")
@@ -13,78 +24,49 @@ public class Categoria {
     @Column(name = "categoria_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer categoriaId;
-    private String nombre;
+    @Column(name = "nombre_categoria")
+	public String nombreCategoria;
+    @Column(name = "sueldo_base")
     private BigDecimal sueldoBase;
+    @JsonIgnore
+    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+    private List<Empleado> empleadosporCategoria = new ArrayList<Empleado>();
 
-    @OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Empleado> empleados = new ArrayList<Empleado>();
-
-    @OneToOne(mappedBy = "categoria", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Empleado empleado;
-
-
-
-    public String getNombre() {
-        return nombre;
+    public Integer getCategoriaId() {
+        return categoriaId;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setCategoriaId(Integer categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public String getNombre() {
+        return nombreCategoria;
+    }
+
+    public void setNombreCategoria(String nombreCategoria) {
+        this.nombreCategoria = nombreCategoria;
     }
 
     public BigDecimal getSueldoBase() {
         return sueldoBase;
     }
 
-    public void setSueldoBase(BigDecimal sueldo) {
-        this.sueldoBase = sueldo;
-    }
-
-    public List<Empleado> getEmpleados() {
-        return empleados;
-    }
-
-    public void setEmpleados(List<Empleado> empleados) {
-        this.empleados = empleados;
-    }
-
-
-    public List<Categoria> getCategoriasTodas(List<Categoria> nombreCategorias) {
-        return nombreCategorias;
-    }
-
-    public int getCategoriaId() {
-
-        return categoriaId;
-    }
-
-    public void setCategoriaId() {
-        this.categoriaId = 0;
-    }
-
-    public Categoria(String nombre, BigDecimal sueldoBase, Integer categoriaId) {
-        this.nombre = nombre;
+    public void setSueldoBase(BigDecimal sueldoBase) {
         this.sueldoBase = sueldoBase;
-        this.categoriaId = categoriaId;
-
     }
 
-    public Categoria(Empleado em) {
 
-        this.setEmpleado(em);
-        em.setCategoria(this);
-
+    public void setEmpleadosPorCategoria(List<Empleado> empleadosporCategoria) {
+		this.empleadosporCategoria = empleadosporCategoria;
+    }
+    
+    public List<Empleado> getEmpleadosPorCategoria(){
+        return empleadosporCategoria;
     }
 
-	public Categoria() {
-	}
-
-	void setEmpleado(Empleado empleado) {
-       this.empleado=empleado;
+    public Categoria() {
     }
-
-    public void getCategoria(int empleadoId) {
-	}
-
 
 }
+

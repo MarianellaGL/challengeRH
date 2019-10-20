@@ -3,16 +3,13 @@ package ar.com.ada.challengerh.challengerh.models.request;
 import java.math.BigDecimal;
 import java.util.Date;
 
-
-/**
- * RegistrationRequest
- */
-public class RegistrationRequest {
+public class ActualizarEmpleadoRequest {
 
     public String nombreEmpleado;
     public int edadEmpleado;
+    public BigDecimal sueldoEmpleado;
     public Integer categoriaId;
-    public BigDecimal sueldo;
+    public Integer empleadoid;
     public Date fechaAlta;
-
+    public Date fechaBaja;
 }

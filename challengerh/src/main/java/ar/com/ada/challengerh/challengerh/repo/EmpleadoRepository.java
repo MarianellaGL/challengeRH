@@ -9,7 +9,7 @@ import ar.com.ada.challengerh.challengerh.entities.Empleado;
 @Repository
 public interface EmpleadoRepository extends JpaRepository<Empleado, Integer> {
 
-    Empleado findByNombre(String nombreEmpleado);
+    Empleado findByNombreEmpleado(String nombreEmpleado);
 
 
 
