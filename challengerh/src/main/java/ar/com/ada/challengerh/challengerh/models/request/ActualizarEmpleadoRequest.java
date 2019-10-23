@@ -9,7 +9,7 @@ public class ActualizarEmpleadoRequest {
     public int edadEmpleado;
     public BigDecimal sueldoEmpleado;
     public Integer categoriaId;
-    public Integer empleadoid;
+    public Integer empleadoId;
     public Date fechaAlta;
     public Date fechaBaja;
 }

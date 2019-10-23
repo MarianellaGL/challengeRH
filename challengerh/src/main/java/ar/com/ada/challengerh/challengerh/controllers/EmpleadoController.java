@@ -56,9 +56,9 @@ public class EmpleadoController {
     }
 
     @GetMapping("/empleados/{id}")
-    public Empleado getEmpleado(@PathVariable int empleadoId){
+    public Empleado getEmpleado(@PathVariable int id){
 
-        Empleado e = es.buscarPorId(empleadoId);
+        Empleado e = es.buscarPorId(id);
         return e;
     }
 
@@ -77,31 +77,31 @@ public class EmpleadoController {
 
         r.isOk = true;
         r.message = "Empleado " + req.nombreEmpleado + " actualizado con éxito.";
-        r.empleadoid = e.getEmpleadoId();
+        r.empleadoId = e.getEmpleadoId();
         return r;
     }
 
     @PutMapping("/empleados/{id}/sueldos")
-    public ActualizarEmpleadoResponse updateSueldo(@PathVariable int empleadoId, @RequestBody ActualizarSueldoRequest req){
+    public ActualizarEmpleadoResponse updateSueldo(@PathVariable int id, @RequestBody ActualizarSueldoRequest req){
         ActualizarEmpleadoResponse r = new ActualizarEmpleadoResponse();
 
-        Empleado e = es.updateSueldo(empleadoId, req.sueldoEmpleado);
+        Empleado e = es.updateSueldo(id, req.sueldoEmpleado);
 
         r.isOk = true;
         r.message = "Empleado " + e.nombreEmpleado + " actualizado con éxito.";
-        r.empleadoid = e.getEmpleadoId();
+        r.empleadoId = e.getEmpleadoId();
         return r;
     }
 
     @DeleteMapping("/empleados/{id}")
-    public ActualizarEmpleadoResponse bajaEmpleado(@PathVariable int empleadoId){
+    public ActualizarEmpleadoResponse bajaEmpleado(@PathVariable int id){
         ActualizarEmpleadoResponse r = new ActualizarEmpleadoResponse();
 
-        Empleado e = es.bajaEmpleado(empleadoId);
+        Empleado e = es.bajaEmpleado(id);
 
         r.isOk = true;
         r.message = "Estado de empleado " + e.nombreEmpleado + " modificado con éxito.";
-        r.empleadoid = e.getEmpleadoId();
+        r.empleadoId = e.getEmpleadoId();
         return r;
     }
 }

@@ -53,7 +53,7 @@ public class EmpleadoService {
         return null;
     }
 
-    public Empleado updateEmpleado(Integer empleadoId, String nombreEmpleado, int edadEmpleado, Integer categoriaId) { // excepto sueldo y estado
+    public Empleado updateEmpleado(int empleadoId, String nombreEmpleado, int edadEmpleado, Integer categoriaId) { // excepto sueldo y estado
         Empleado e = this.buscarPorId(empleadoId);
         e.setNombreEmpleado(nombreEmpleado);
         e.setEdadEmpleado(edadEmpleado);
@@ -64,14 +64,14 @@ public class EmpleadoService {
         return e;
     }
 
-    public Empleado updateSueldo(Integer empleadoId, BigDecimal sueldoEmpleado) {
+    public Empleado updateSueldo(int empleadoId, BigDecimal sueldoEmpleado) {
         Empleado e = this.buscarPorId(empleadoId);
         e.setSueldoEmpleado(sueldoEmpleado);
         repo.save(e);
         return e;
     }
 
-    public Empleado bajaEmpleado(Integer empleadoId) {
+    public Empleado bajaEmpleado(int empleadoId) {
         Empleado e = this.buscarPorId(empleadoId);
         e.setEstadoEmpleado("Baja");
         Date f = new Date();

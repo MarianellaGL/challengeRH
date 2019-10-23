@@ -6,7 +6,7 @@ public class ActualizarEmpleadoResponse {
      public boolean isOk = false;
     public String message = "";
 
-    public int empleadoid;
+    public int empleadoId;
 
 
 }
