@@ -56,11 +56,12 @@ public class Categoria {
         this.sueldoBase = sueldoBase;
     }
 
-
+    @JsonIgnore
     public void setEmpleadosPorCategoria(List<Empleado> empleadosporCategoria) {
 		this.empleadosporCategoria = empleadosporCategoria;
     }
     
+    @JsonIgnore
     public List<Empleado> getEmpleadosPorCategoria(){
         return empleadosporCategoria;
     }

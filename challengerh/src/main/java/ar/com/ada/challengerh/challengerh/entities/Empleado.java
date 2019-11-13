@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "empleado")
 public class Empleado {
@@ -104,10 +106,12 @@ public class Empleado {
         this.sueldoEmpleado = sueldoEmpleado;
     }
 
+    @JsonIgnore
+
     public Categoria getCategoria() {
         return categoria;
     }
-
+    @JsonIgnore
     public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
